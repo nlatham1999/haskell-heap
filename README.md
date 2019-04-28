@@ -1,7 +1,7 @@
 # haskell-heap
 a min heap implementation written in haskell
 
-main functions:
+main functions: '\n'
   insert    :takes in a value and a heap and adds the value to the heap
   getMin    :takes in a heapgets the top value of the stack
   deleteMin :takes in a heap and deletes the top value
