@@ -1,6 +1,8 @@
---EC1.hs
+--heap.hs
 --Nicholas Latham
---implemantation of a heap
+--implementation of a heap
+--funtions: insert, getMin, deleteMin, buildHeap, heapSort
+
 
 data Heap a = Node a (Heap a) (Heap a)
             |Nil
@@ -9,6 +11,7 @@ data Heap a = Node a (Heap a) (Heap a)
 --insert
 --inserts a node into a heap
 insert :: Ord a => a -> Heap a -> Heap a
+insert a Nil = Node a Nil Nil
 insert a (Node n Nil r) = trickleUp 'l' (Node n (Node a Nil Nil) r)
 insert a (Node n l Nil) = trickleUp 'r' (Node n l (Node a Nil Nil))
 insert a (Node n l r)
@@ -88,3 +91,20 @@ trickleDown (Node a (Node b bl br) (Node c cl cr))
   | a <= b && a <= c = Node a (Node b bl br) (Node c cl cr)
   | b <= c && b < a = Node b (trickleDown (Node a bl br)) (Node c cl cr)
   | otherwise = Node c (Node b bl br) (trickleDown (Node a cl cr))
+
+--buildHeap
+--builds a heap from a list
+buildHeap :: Ord a => [a] -> Heap a -> Heap a
+buildHeap [] h = h
+buildHeap (x:xs) h = insert x (buildHeap xs h)
+
+--heapSort
+--sorts a list using heap sort
+heapSort :: Ord a => [a] -> [a]
+heapSort xs = toppleHeap (buildHeap xs Nil)
+
+--toppleHeap
+--recursive helper for heap sort
+toppleHeap :: Ord a => Heap a -> [a]
+toppleHeap Nil = []
+toppleHeap h = (getMin h) : (toppleHeap (deleteMin h))
